@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-30T23:12:32",
+  "timestamp": "2026-06-30T23:46:03",
   "runs": 10,
   "toolchains": {
     ".c": [
@@ -45,38 +45,38 @@
         {
           "label": "Rust / rustc 1.92.0",
           "ext": ".rs",
-          "median_ms": 10.524,
-          "min_ms": 9.975
-        },
-        {
-          "label": "C / gcc 16.1.0",
-          "ext": ".c",
-          "median_ms": 10.68,
-          "min_ms": 10.165
+          "median_ms": 9.998,
+          "min_ms": 9.73
         },
         {
           "label": "VDX / vdx 0.1.2",
           "ext": ".vdx",
-          "median_ms": 14.804,
-          "min_ms": 13.517
+          "median_ms": 13.757,
+          "min_ms": 13.123
+        },
+        {
+          "label": "C / gcc 16.1.0",
+          "ext": ".c",
+          "median_ms": 13.814,
+          "min_ms": 9.973
         },
         {
           "label": "C++ / g++ 16.1.0",
           "ext": ".cpp",
-          "median_ms": 15.651,
-          "min_ms": 14.507
+          "median_ms": 14.999,
+          "min_ms": 14.603
         },
         {
           "label": "Python / python 3.12.10",
           "ext": ".py",
-          "median_ms": 30.633,
-          "min_ms": 29.652
+          "median_ms": 29.919,
+          "min_ms": 27.938
         },
         {
           "label": "JS / node 24.16.0",
           "ext": ".js",
-          "median_ms": 47.759,
-          "min_ms": 45.858
+          "median_ms": 46.968,
+          "min_ms": 43.637
         }
       ]
     },
@@ -85,78 +85,78 @@
         {
           "label": "C / gcc 16.1.0",
           "ext": ".c",
-          "median_ms": 10.82,
-          "min_ms": 10.503
-        },
-        {
-          "label": "Rust / rustc 1.92.0",
-          "ext": ".rs",
-          "median_ms": 12.111,
-          "min_ms": 11.888
-        },
-        {
-          "label": "C++ / g++ 16.1.0",
-          "ext": ".cpp",
-          "median_ms": 16.861,
-          "min_ms": 15.462
-        },
-        {
-          "label": "JS / node 24.16.0",
-          "ext": ".js",
-          "median_ms": 54.317,
-          "min_ms": 52.786
-        },
-        {
-          "label": "Python / python 3.12.10",
-          "ext": ".py",
-          "median_ms": 110.98,
-          "min_ms": 106.19
+          "median_ms": 10.63,
+          "min_ms": 10.299
         },
         {
           "label": "VDX / vdx 0.1.2",
           "ext": ".vdx",
-          "median_ms": 22771.677,
-          "min_ms": 20635.568
+          "median_ms": 11.586,
+          "min_ms": 11.21
+        },
+        {
+          "label": "Rust / rustc 1.92.0",
+          "ext": ".rs",
+          "median_ms": 12.098,
+          "min_ms": 10.66
+        },
+        {
+          "label": "C++ / g++ 16.1.0",
+          "ext": ".cpp",
+          "median_ms": 15.631,
+          "min_ms": 15.316
+        },
+        {
+          "label": "JS / node 24.16.0",
+          "ext": ".js",
+          "median_ms": 54.782,
+          "min_ms": 52.457
+        },
+        {
+          "label": "Python / python 3.12.10",
+          "ext": ".py",
+          "median_ms": 111.806,
+          "min_ms": 104.159
         }
       ]
     },
     "hello": {
       "rankings": [
         {
-          "label": "C / gcc 16.1.0",
-          "ext": ".c",
-          "median_ms": 12.666,
-          "min_ms": 9.714
-        },
-        {
           "label": "Rust / rustc 1.92.0",
           "ext": ".rs",
-          "median_ms": 16.042,
-          "min_ms": 14.284
+          "median_ms": 10.43,
+          "min_ms": 9.713
+        },
+        {
+          "label": "C / gcc 16.1.0",
+          "ext": ".c",
+          "median_ms": 11.387,
+          "min_ms": 10.064
         },
         {
           "label": "VDX / vdx 0.1.2",
           "ext": ".vdx",
-          "median_ms": 16.548,
-          "min_ms": 15.544
+          "median_ms": 11.584,
+          "min_ms": 11.241
         },
         {
           "label": "C++ / g++ 16.1.0",
           "ext": ".cpp",
-          "median_ms": 17.695,
-          "min_ms": 14.724
+          "median_ms": 14.752,
+          "min_ms": 14.144
         },
         {
           "label": "Python / python 3.12.10",
           "ext": ".py",
-          "median_ms": 32.814,
-          "min_ms": 32.073
+          "median_ms": 30.156,
+          "min_ms": 26.917
         },
         {
           "label": "JS / node 24.16.0",
           "ext": ".js",
-          "median_ms": 51.992,
-          "min_ms": 45.664
+          "median_ms": 46.461,
+          "min_ms": 45.293
         }
       ]
     }
