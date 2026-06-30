@@ -121,7 +121,7 @@ TOOLCHAINS = {
         {"id": "bun", "compile": None, "run": lambda src: ["bun", src]},
     ],
     ".vdx": [
-        {"id": "vdx", "compile": None, "run": lambda src: ["vdx", src], "fallback_version": "0.1.2"},
+        {"id": "vdx", "compile": None, "run": lambda src: ["vdx", src], "fallback_version": "0.1.3"},
     ],
     ".go": [
         {
