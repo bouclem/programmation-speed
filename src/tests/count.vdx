@@ -1,0 +1,9 @@
+let count = 0;
+@unsafe for (let i = 0; i < 10; i = i + 1) {
+    @unsafe for (let j = 0; j < 10; j = j + 1) {
+        @unsafe for (let k = 0; k < 10; k = k + 1) {
+            count = count + 1;
+        }
+    }
+}
+print(count);
