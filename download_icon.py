@@ -22,6 +22,9 @@ ICON_URLS = {
     "python": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
     "javascript": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
     "vdx": "https://raw.githubusercontent.com/bouclem/vdx/main/website/public/logo.svg",
+    "go": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg",
+    "zig": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/zig/zig-original.svg",
+    "rust": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg",
 }
 
 ICON_SIZE = 128

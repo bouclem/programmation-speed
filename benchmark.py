@@ -53,6 +53,9 @@ EXT_TO_ICON = {
     ".py": "python",
     ".js": "javascript",
     ".vdx": "vdx",
+    ".go": "go",
+    ".zig": "zig",
+    ".rs": "rust",
 }
 
 
@@ -119,6 +122,27 @@ TOOLCHAINS = {
     ],
     ".vdx": [
         {"id": "vdx", "compile": None, "run": lambda src: ["vdx", src], "fallback_version": "0.1.2"},
+    ],
+    ".go": [
+        {
+            "id": "go",
+            "compile": lambda src, out: ["go", "build", "-o", out, src],
+            "run": lambda exe: [exe],
+        },
+    ],
+    ".zig": [
+        {
+            "id": "zig",
+            "compile": lambda src, out: ["zig", "build-exe", src, "-femit-bin=" + out, "-O", "ReleaseFast"],
+            "run": lambda exe: [exe],
+        },
+    ],
+    ".rs": [
+        {
+            "id": "rustc",
+            "compile": lambda src, out: ["rustc", "-O", "-o", out, src],
+            "run": lambda exe: [exe],
+        },
     ],
 }
 
@@ -198,7 +222,10 @@ def detect_toolchains():
 
 def toolchain_label(ext, tc):
     """Human-readable label, e.g. 'C / gcc 16.1.0' or 'Python / python 3.12.10'."""
-    lang = {".c": "C", ".cpp": "C++", ".py": "Python", ".js": "JS", ".vdx": "VDX"}[ext]
+    lang = {
+        ".c": "C", ".cpp": "C++", ".py": "Python", ".js": "JS",
+        ".vdx": "VDX", ".go": "Go", ".zig": "Zig", ".rs": "Rust",
+    }[ext]
     return f"{lang} / {tc['id']} {tc['version']}"
 
 

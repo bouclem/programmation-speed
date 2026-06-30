@@ -5,6 +5,9 @@ const EXT_TO_ICON = {
   ".py": "python",
   ".js": "javascript",
   ".vdx": "vdx",
+  ".go": "go",
+  ".zig": "zig",
+  ".rs": "rust",
 };
 
 // ── Language display colors (matching chart palette) ───────────
@@ -14,6 +17,9 @@ const LANG_COLORS = {
   ".py": "#e0af68",
   ".js": "#f7768e",
   ".vdx": "#9ece6a",
+  ".go": "#7dcfff",
+  ".zig": "#f38ba8",
+  ".rs": "#ff9e64",
 };
 
 // ── Fetch and render ───────────────────────────────────────────
