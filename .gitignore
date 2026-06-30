@@ -23,10 +23,3 @@ test_output/
 .env
 build-output.txt
 version-info/
-
-# Dagger POC
-dagger-poc/.venv/
-dagger-poc/__pycache__/
-dagger-poc/.pytest_cache/
-dagger-poc/results/
-dagger-poc/_nix_cache/
