@@ -2,9 +2,6 @@
 .lsp
 .vscode
 .idea
-results/*.csv
-results/*.png
-results/*.json
 leibniz
 src/cs/obj/Debug
 src/_build/

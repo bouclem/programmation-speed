@@ -8,10 +8,12 @@ Uses matplotlib with the Agg backend (no GUI window opens).
 """
 
 import re
+import json
 import shutil
 import subprocess
 import time
 import statistics
+from datetime import datetime
 from pathlib import Path
 
 import matplotlib
@@ -27,6 +29,7 @@ ROOT = Path(__file__).parent.resolve()
 TESTS_DIR = ROOT / "src" / "tests"
 RESULTS_DIR = ROOT / "results"
 ICONS_DIR = ROOT / "icons"
+WEBSITE_DIR = ROOT / "src" / "website"
 RUNS = 10  # Number of timed runs per test (median is used)
 
 # Dark theme colors
@@ -420,6 +423,67 @@ def plot_combined(all_results):
     print(f"  → Saved: results/combined_benchmark.png")
 
 
+def save_json(all_results, available):
+    """Save benchmark results as JSON for the website to consume."""
+    data = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "runs": RUNS,
+        "toolchains": {
+            ext: [{"id": c["id"], "version": c["version"]} for c in chains]
+            for ext, chains in available.items()
+        },
+        "tests": {},
+    }
+
+    for test_name, results in all_results.items():
+        # Sort by median (fastest first)
+        sorted_langs = sorted(results.keys(), key=lambda l: results[l]["median"])
+        data["tests"][test_name] = {
+            "rankings": [
+                {
+                    "label": lang,
+                    "ext": results[lang]["ext"],
+                    "median_ms": round(results[lang]["median"] * 1000, 3),
+                    "min_ms": round(results[lang]["min"] * 1000, 3),
+                }
+                for lang in sorted_langs
+            ]
+        }
+
+    json_path = RESULTS_DIR / "results.json"
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    print(f"  → Saved: results/results.json")
+
+    # Also copy into the website directory for Vercel deployment
+    sync_website_assets()
+
+
+def sync_website_assets():
+    """Copy results.json, chart PNGs, and icons into src/website/ for Vercel."""
+    import shutil
+
+    web_data = WEBSITE_DIR / "data"
+    web_icons = WEBSITE_DIR / "icons"
+    web_data.mkdir(exist_ok=True)
+    web_icons.mkdir(exist_ok=True)
+
+    # Copy results.json
+    shutil.copy2(RESULTS_DIR / "results.json", WEBSITE_DIR / "results.json")
+
+    # Copy chart PNGs
+    for png in RESULTS_DIR.glob("*.png"):
+        shutil.copy2(png, web_data / png.name)
+
+    # Copy icons
+    for icon in ICONS_DIR.glob("*.png"):
+        shutil.copy2(icon, web_icons / icon.name)
+
+    n_charts = len(list(RESULTS_DIR.glob("*.png")))
+    n_icons = len(list(ICONS_DIR.glob("*.png")))
+    print(f"  → Synced assets to src/website/ (results.json, {n_charts} charts, {n_icons} icons)")
+
+
 # ── Main ───────────────────────────────────────────────────────────────────
 
 
@@ -486,6 +550,9 @@ def benchmark_all():
 
     if all_results:
         plot_combined(all_results)
+
+    # Save JSON summary for the website
+    save_json(all_results, available)
 
     print(f"\nDone. Charts saved to {RESULTS_DIR}/")
 
