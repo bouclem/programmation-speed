@@ -281,12 +281,13 @@ def run_test(target, tc, runs=RUNS):
 
 
 def cleanup_exe(test_name):
-    """Remove compiled .exe files for a given test name."""
-    for exe in TESTS_DIR.glob(f"{test_name}*.exe"):
-        try:
-            exe.unlink()
-        except OSError:
-            pass
+    """Remove compiled .exe and .pdb files for a given test name."""
+    for pattern in (f"{test_name}*.exe", f"{test_name}*.pdb"):
+        for f in TESTS_DIR.glob(pattern):
+            try:
+                f.unlink()
+            except OSError:
+                pass
 
 
 # ── Plotting ───────────────────────────────────────────────────────────────
