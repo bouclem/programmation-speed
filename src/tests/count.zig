@@ -1,7 +1,6 @@
 const std = @import("std");
 
-pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
+pub fn main() void {
     var count: u32 = 0;
     var i: u32 = 0;
     while (i < 10) : (i += 1) {
@@ -13,5 +12,5 @@ pub fn main() !void {
             }
         }
     }
-    try stdout.print("{}\n", .{count});
+    std.debug.print("{}\n", .{count});
 }

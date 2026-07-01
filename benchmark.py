@@ -56,6 +56,7 @@ EXT_TO_ICON = {
     ".go": "go",
     ".zig": "zig",
     ".rs": "rust",
+    ".java": "java",
 }
 
 
@@ -135,6 +136,7 @@ TOOLCHAINS = {
             "id": "zig",
             "compile": lambda src, out: ["zig", "build-exe", src, "-femit-bin=" + out, "-O", "ReleaseFast"],
             "run": lambda exe: [exe],
+            "out_ext": ".exe",
         },
     ],
     ".rs": [
@@ -142,6 +144,14 @@ TOOLCHAINS = {
             "id": "rustc",
             "compile": lambda src, out: ["rustc", "-O", "-o", out, src],
             "run": lambda exe: [exe],
+        },
+    ],
+    ".java": [
+        {
+            "id": "java",
+            "compile": lambda src, out: ["javac", "-d", str(TESTS_DIR), src],
+            "run": lambda target: ["java", "-cp", str(TESTS_DIR), target],
+            "target_fn": lambda src, out: Path(src).stem,
         },
     ],
 }
@@ -158,8 +168,8 @@ def is_available(binary):
 
 def get_version(binary):
     """Try to extract a short version string for a compiler/interpreter."""
-    # -dumpversion gives clean "16.1.0" for gcc/g++; try it first
-    for args in (["-dumpversion"], ["--version"], ["-v"]):
+    # Different tools use different flags — try them all
+    for args in (["-dumpversion"], ["--version"], ["-version"], ["version"], ["-v"]):
         try:
             r = subprocess.run(
                 [binary] + args,
@@ -214,6 +224,7 @@ def detect_toolchains():
                 "compile": tc["compile"],
                 "run": tc["run"],
                 "version": version,
+                **{k: v for k, v in tc.items() if k not in ("id", "compile", "run", "fallback_version")},
             })
         if chains:
             available[ext] = chains
@@ -225,6 +236,7 @@ def toolchain_label(ext, tc):
     lang = {
         ".c": "C", ".cpp": "C++", ".py": "Python", ".js": "JS",
         ".vdx": "VDX", ".go": "Go", ".zig": "Zig", ".rs": "Rust",
+        ".java": "Java",
     }[ext]
     return f"{lang} / {tc['id']} {tc['version']}"
 
@@ -247,8 +259,9 @@ def discover_tests(supported_exts):
 
 
 def compile_test(src_path, tc, suffix_tag):
-    """Compile a source file with a given toolchain. Returns exe path or None."""
-    out_path = src_path.with_name(f"{src_path.stem}_{suffix_tag}.exe")
+    """Compile a source file with a given toolchain. Returns run target or None."""
+    out_ext = tc.get("out_ext", ".exe")
+    out_path = src_path.with_name(f"{src_path.stem}_{suffix_tag}{out_ext}")
     cmd = tc["compile"](str(src_path), str(out_path))
     try:
         result = subprocess.run(cmd, capture_output=True, text=True)
@@ -258,6 +271,9 @@ def compile_test(src_path, tc, suffix_tag):
     if result.returncode != 0:
         print(f"    ✗ Compile error: {result.stderr.strip()}")
         return None
+    # Allow toolchain to override the run target (e.g. Java uses class name)
+    if "target_fn" in tc:
+        return tc["target_fn"](str(src_path), str(out_path))
     return str(out_path)
 
 
@@ -281,8 +297,8 @@ def run_test(target, tc, runs=RUNS):
 
 
 def cleanup_exe(test_name):
-    """Remove compiled .exe and .pdb files for a given test name."""
-    for pattern in (f"{test_name}*.exe", f"{test_name}*.pdb"):
+    """Remove compiled artifacts (.exe, .pdb, .class) for a given test name."""
+    for pattern in (f"{test_name}*.exe", f"{test_name}*.pdb", f"{test_name}*.class"):
         for f in TESTS_DIR.glob(pattern):
             try:
                 f.unlink()
@@ -303,6 +319,16 @@ def _style_dark(ax, fig):
     ax.title.set_color(TITLE_COLOR)
     ax.xaxis.label.set_color(TEXT_COLOR)
     ax.yaxis.label.set_color(TEXT_COLOR)
+
+
+def fmt_time(ms):
+    """Format milliseconds as human-readable: 1.2ms, 350ms, 1.3s, 12.5s."""
+    if ms < 1:
+        return f"{ms:.2f} ms"
+    elif ms < 1000:
+        return f"{ms:.1f} ms"
+    else:
+        return f"{ms / 1000:.1f} s"
 
 
 def plot_single_test(test_name, results):
@@ -327,7 +353,7 @@ def plot_single_test(test_name, results):
 
     ax.set_yticks(list(y_pos))
     ax.set_yticklabels(langs, fontsize=10)
-    ax.set_xlabel("Time (ms)", fontsize=11)
+    ax.set_xlabel("Time", fontsize=11)
     ax.set_title(f"Benchmark: {test_name}", fontsize=14, fontweight="bold", pad=12)
     ax.legend(facecolor=PANEL_COLOR, edgecolor=GRID_COLOR, labelcolor=TEXT_COLOR)
     ax.grid(axis="x", color=GRID_COLOR, alpha=0.4)
@@ -339,7 +365,7 @@ def plot_single_test(test_name, results):
         ax.text(
             bar.get_width() + x_max * 0.01,
             bar.get_y() + bar.get_height() / 2,
-            f"{val:.3f} ms",
+            fmt_time(val),
             ha="left",
             va="center",
             fontsize=9,
@@ -389,7 +415,7 @@ def plot_combined(all_results):
     bar_height = group_height / max(n_langs, 1)
 
     fig, ax = plt.subplots(
-        figsize=(12, max(5, n_tests * n_langs * 0.35 + 2))
+        figsize=(16, max(8, n_tests * n_langs * 0.55 + 3))
     )
     _style_dark(ax, fig)
 
@@ -400,7 +426,7 @@ def plot_combined(all_results):
     for ti, test_name in enumerate(test_names):
         langs = test_langs[test_name]
         for li, lang in enumerate(langs):
-            y = ti * (group_height + 0.4) + (li - len(langs) / 2 + 0.5) * bar_height
+            y = ti * (group_height + 0.6) + (li - len(langs) / 2 + 0.5) * bar_height
             y_positions.append(y)
             y_labels.append(f"{test_name} — {lang}")
             ext = all_results[test_name].get(lang, {}).get("ext", "")
@@ -414,7 +440,7 @@ def plot_combined(all_results):
                 ax.text(
                     val + 0.5,
                     y,
-                    f"{val:.1f}",
+                    fmt_time(val),
                     ha="left",
                     va="center",
                     fontsize=8,
@@ -423,7 +449,7 @@ def plot_combined(all_results):
 
     ax.set_yticks(y_positions)
     ax.set_yticklabels(y_labels, fontsize=9)
-    ax.set_xlabel("Time (ms)", fontsize=11)
+    ax.set_xlabel("Time", fontsize=11)
     ax.set_title("Programming Language Speed Comparison", fontsize=14, fontweight="bold", pad=12)
     ax.grid(axis="x", color=GRID_COLOR, alpha=0.4)
     ax.invert_yaxis()

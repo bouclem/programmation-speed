@@ -514,6 +514,136 @@ body {
   text-decoration: underline;
 }
 
+/* ── Test Detail Page ──────────────────────────────────────────── */
+
+.back-link {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--green);
+}
+
+.test-card--clickable {
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+
+.test-card--clickable:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.detail-winner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1.5rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.detail-winner-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.detail-winner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.detail-winner-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-winner-name {
+  font-family: var(--grotesk);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.detail-winner-time {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.detail-chart {
+  margin-bottom: 2rem;
+}
+
+.detail-chart img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+
+.detail-table thead th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  color: var(--text-dim);
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-table tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.detail-table tbody tr:hover {
+  background: var(--panel);
+}
+
+.detail-rank {
+  width: 2rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.detail-lang {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-num {
+  text-align: right;
+  color: var(--text);
+}
+
+.detail-ratio {
+  text-align: right;
+  color: var(--text-dim);
+}
+
 /* ── Loading ──────────────────────────────────────────────────── */
 
 .loading-block {

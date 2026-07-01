@@ -5,7 +5,6 @@ fn fib(n: u32) u32 {
     return fib(n - 1) + fib(n - 2);
 }
 
-pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
-    try stdout.print("{}\n", .{fib(30)});
+pub fn main() void {
+    std.debug.print("{}\n", .{fib(30)});
 }

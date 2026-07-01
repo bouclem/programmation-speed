@@ -41,7 +41,7 @@
           <span class="hero-title-accent">Speed Comparison</span>
         </h1>
         <p class="hero-sub">
-          Real execution-time benchmarks across C, C++, Python, JavaScript, and VDX.
+          Real execution-time benchmarks across C, C++, Python, JavaScript, VDX, Go, Zig, Rust, and Java.
           Every test runs <span id="run-count">—</span> times per toolchain. Median timing. No fluff.
         </p>
         <div class="hero-meta" id="hero-meta">
@@ -66,11 +66,23 @@
       <div class="section-inner">
         <div class="section-header">
           <h2 class="section-title">Rankings</h2>
-          <p class="section-desc">Sorted by median execution time. Fastest first.</p>
+          <p class="section-desc">Sorted by median execution time. Fastest first. Click a test for details.</p>
         </div>
         <div id="rankings-content" class="rankings-grid">
           <div class="loading-block">Loading benchmark data...</div>
         </div>
+      </div>
+    </section>
+
+    <!-- Test Detail (hidden by default, shown via hash routing) -->
+    <section id="test-detail" class="section" style="display:none">
+      <div class="section-inner">
+        <a href="#rankings" class="back-link">&larr; Back to Rankings</a>
+        <div class="section-header">
+          <h2 class="section-title" id="detail-title">Test</h2>
+          <p class="section-desc" id="detail-desc"></p>
+        </div>
+        <div id="detail-content"></div>
       </div>
     </section>
 

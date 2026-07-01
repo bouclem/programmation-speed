@@ -25,6 +25,7 @@ ICON_URLS = {
     "go": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg",
     "zig": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/zig/zig-original.svg",
     "rust": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg",
+    "java": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
 }
 
 ICON_SIZE = 128
